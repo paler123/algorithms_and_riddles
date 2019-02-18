@@ -105,48 +105,71 @@ constexpr auto solve_non_trivial(Matrix const & input) {
     return top_paths.max.val;
 }
 
-template <typename T1, typename T2, typename... Ts>
-constexpr bool is_same_v = std::is_same_v<T1, T2> && is_same_v<T2, Ts...>;
-
-template <typename T1, typename T2>
-constexpr bool is_same_v<T1, T2> = std::is_same_v<T1, T2>;
+/*
+ *template <typename T1, typename T2, typename... Ts>
+ *constexpr bool is_same_v = std::is_same_v<T1, T2> && is_same_v<T2, Ts...>;
+ *
+ *template <typename T1, typename T2>
+ *constexpr bool is_same_v<T1, T2> = std::is_same_v<T1, T2>;
+ */
 
 template <typename T>
-struct invoker {
-    struct cols_invoker {
-        auto operator()(T& t) {
-             return t.cols();
-        }
-    };
-    struct rows_invoker {
-        auto operator()(T& t) {
-             return t.rows();
-        }
-    };
+struct cols_invoker {
     auto operator()(T& t) {
-        static_assert(is_same_v<std::result_of_t<cols_invoker(T&)>,
-                                std::result_of_t<rows_invoker(T&)>,
-                                std::size_t>);
-
-        return t(0, 0);
+         return t.cols();
     }
 };
 
 template <typename T>
-using is_matrix_of_arithmetic_types = std::enable_if_t<
+struct rows_invoker {
+    auto operator()(T& t) {
+         return t.rows();
+    }
+};
+
+template <typename T>
+struct index_op_invoker {
+    auto operator()(T& t) {
+        return t(0, 0);
+    }
+};
+
+template <typename T, template <typename M> class invoker>
+using invoked_type = std::result_of_t<invoker<T>(T&)>;
+
+template <typename Res, typename T, template<typename M> class invoker>
+constexpr bool right_type_on_invoke = std::is_same_v<Res,
+          invoked_type<T, invoker>>;
+
+template <typename T>
+constexpr bool has_index_operator =
     std::is_arithmetic_v<
         std::decay_t<
-            std::result_of_t<invoker<T>(T&)>>>>;
+            std::result_of_t<index_op_invoker<T>(T&)>>>;
+
+template <typename T>
+constexpr bool has_rows = right_type_on_invoke<std::size_t, T, rows_invoker>;
+
+template <typename T>
+constexpr bool has_cols = right_type_on_invoke<std::size_t, T, cols_invoker>;
+
 
 } // namespace Details
 
+
+template <typename T>
+using is_matrix_of_arithmetic_types = std::enable_if_t<
+    Details::has_index_operator<T> &&
+    Details::has_rows<T> &&
+    Details::has_cols<T>
+>;
 
 /*
  * Finds max sum of elements of input Matrix, with following constraints:
  * Exactly one element from each row can be selected
  * If element at (i, j) has been selected, then (i + 1, j) can't be selected
  */
-template<typename Matrix, typename = Details::is_matrix_of_arithmetic_types<Matrix>>
+template<typename Matrix, typename = is_matrix_of_arithmetic_types<Matrix>>
 constexpr auto solve (Matrix const & input){
     auto result = input(0, 0);
     // special case for ill-shaped matrices
