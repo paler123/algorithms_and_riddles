@@ -5,17 +5,21 @@
 template <std::size_t rows, std::size_t cols>
 using Problem = Array2d<int, rows, cols>;
 
-TEST_CASE("Right max sum is found for problems", "[Numeric solver]") {
+TEST_CASE("Right max sum is found for problems", "[Numeric solver]")
+{
 
-  SECTION("TRIVIAL") {
+  SECTION("TRIVIAL")
+  {
     constexpr auto trivial = Problem<1u, 1u>{{1}};
     STATIC_REQUIRE(MaxSum::solve(trivial) == 1);
   }
-  SECTION("ILL FORMED") {
+  SECTION("ILL FORMED")
+  {
     constexpr auto ill_formed = Problem<5u, 3u>{};
     STATIC_REQUIRE(MaxSum::solve(ill_formed) == 0);
   }
-  SECTION("NON TRIVIAL") {
+  SECTION("NON TRIVIAL")
+  {
     constexpr auto problem2x2_0 = Problem<2u, 2u>{{1, 0, 0, 1}};
     STATIC_REQUIRE(MaxSum::solve(problem2x2_0) == 2);
 
@@ -34,8 +38,7 @@ TEST_CASE("Right max sum is found for problems", "[Numeric solver]") {
     constexpr auto problem3x3 = Problem<3u, 3u>{{1, 2, 3, 5, 6, 4, 3, 2, 4}};
     STATIC_REQUIRE(MaxSum::solve(problem3x3) == 13);
 
-    constexpr auto problem4x4 =
-        Problem<4u, 4u>{{1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 4, 2, 6, 3, 5, 7}};
+    constexpr auto problem4x4 = Problem<4u, 4u>{{1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 4, 2, 6, 3, 5, 7}};
     STATIC_REQUIRE(MaxSum::solve(problem4x4) == 27);
   }
 }
