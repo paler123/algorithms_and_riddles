@@ -33,6 +33,5 @@ endif
 
 catch2_dep = dependency('catch2', fallback : ['catch2', 'catch2_dep'])
 
-subdir('lib')
-subdir('test')
+subdir('max_matrix_sum')
 
