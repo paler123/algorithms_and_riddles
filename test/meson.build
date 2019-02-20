@@ -1,5 +1,6 @@
 max_matrix_sum_ut_sources = [
-    'tests.cpp', 
+    'solver.cpp',
+    'tests.cpp'
 ] 
 
 max_matrix_sum_test_exe = executable( 
