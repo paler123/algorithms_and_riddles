@@ -2,10 +2,24 @@
 This project consists of a solution to a simple dynamic programming problem and some compile time tests for it.
 
 ## Usage
-Requirements: ability to clone / download source from here and a C++ compiler with support for C++17 (e.g. `matrix_type_traits.hpp` rely directly on `_v` variants of type traits from `type_traits` header)
-Compiling and running the tests:
-    c++ -std=c++17 tests.cpp
-should work assuming c++ is an alias for an appropriate compiler.
+Requirements:  
+ * git
+ * meson build system (for UTs)
+ * ninja (for UTs)
+
+To use the header only lib:
+
+    cd ~
+    git clone https://github.com/paler123/max_matrix_sums
+ 
+And copy the headers wherever you need them.  
+
+To run UTs, after cloning:
+
+    cd max_matrix_sums
+    meson build
+    cd build
+    ninja test
 
 ## Problem statement
 Given a NxM matrix, find maximum sum of elements, with following constraints:
