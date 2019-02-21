@@ -1,5 +1,5 @@
-#include "max_matrix_sum/array2d.hpp"
-#include "max_matrix_sum/max_sum_solution.hpp"
+#include "array2d.hpp"
+#include "max_sum_solution.hpp"
 #include <catch2/catch.hpp>
 
 template <std::size_t rows, std::size_t cols>
