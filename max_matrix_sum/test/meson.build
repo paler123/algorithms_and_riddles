@@ -1,5 +1,6 @@
 max_matrix_sum_ut_sources = [
     'solver.cpp',
+    'solver_path.cpp',
     'tests.cpp'
 ]
 
