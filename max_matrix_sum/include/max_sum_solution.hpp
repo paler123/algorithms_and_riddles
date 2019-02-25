@@ -23,49 +23,61 @@ struct TopTwo
   PathEnd<T> almost_max;
 };
 
-struct DiscardPaths {
-  constexpr void init (std::size_t, std::size_t, std::size_t) {}
-  constexpr void adjust_ends(std::size_t, std::size_t)  {
-  // intentionally discard the values
+struct DiscardPaths
+{
+  constexpr void init(std::size_t, std::size_t, std::size_t)
+  {
+  }
+  constexpr void adjust_ends(std::size_t, std::size_t)
+  {
+    // intentionally discard the values
   }
 };
 
-struct StorePaths {
-  void init (std::size_t rows, std::size_t top, std::size_t almost_top)
+struct StorePaths
+{
+  void init(std::size_t rows, std::size_t top, std::size_t almost_top)
   {
     top_path.reserve(rows);
     almost_top_path.reserve(rows);
     top_path.push_back(top);
     almost_top_path.push_back(almost_top);
   }
-  void adjust_ends(std::size_t top_end, std::size_t almost_top_end)  {
+  void adjust_ends(std::size_t top_end, std::size_t almost_top_end)
+  {
     // one of paths definetely goes through top
-    if (path_covers_current_top_path(top_end)) {
-      if (path_covers_current_top_path(almost_top_end)) {
+    if (path_covers_current_top_path(top_end))
+    {
+      if (path_covers_current_top_path(almost_top_end))
+      {
         almost_top_path = top_path;
         top_path.push_back(top_end);
         almost_top_path.push_back(almost_top_end);
       }
-      else {
+      else
+      {
         top_path.push_back(top_end);
         almost_top_path.push_back(almost_top_end);
       }
     }
-    else {
+    else
+    {
       almost_top_path.push_back(top_end);
       top_path.push_back(almost_top_end);
       std::swap(top_path, almost_top_path);
     }
   }
 
-  std::vector<std::size_t> recover_top() {
+  std::vector<std::size_t> recover_top()
+  {
     return std::move(top_path);
   }
 
 private:
   std::vector<std::size_t> top_path;
   std::vector<std::size_t> almost_top_path;
-  bool path_covers_current_top_path(std::size_t path_end) const {
+  bool path_covers_current_top_path(std::size_t path_end) const
+  {
     return *top_path.crbegin() != path_end;
   }
 };
@@ -120,11 +132,12 @@ constexpr TopTwo<T> find_best_paths_for_row(TopTwo<T> const& top_last_row, std::
 }
 
 template <typename Matrix, typename PathsPolicy>
-constexpr auto solve_non_trivial(Matrix const& input, PathsPolicy && paths)
+constexpr auto solve_non_trivial(Matrix const& input, PathsPolicy&& paths)
 {
   auto top_paths = find_top2_in_first_row(input);
   paths.init(input.rows(), top_paths.max.index, top_paths.almost_max.index);
-  for (auto i = 1u; i < input.rows(); ++i) {
+  for (auto i = 1u; i < input.rows(); ++i)
+  {
     top_paths = find_best_paths_for_row(top_paths, i, input);
     paths.adjust_ends(top_paths.max.index, top_paths.almost_max.index);
   }
@@ -134,11 +147,12 @@ constexpr auto solve_non_trivial(Matrix const& input, PathsPolicy && paths)
 }
 
 template <typename Matrix, typename PathsPolicy>
-constexpr auto solve(Matrix const& input, PathsPolicy && paths)
+constexpr auto solve(Matrix const& input, PathsPolicy&& paths)
 {
   auto result = input(0, 0);
   // special case for ill-shaped matrices
-  if (input.rows() > input.cols()) {
+  if (input.rows() > input.cols())
+  {
     result = 0;
   }
   else if (input.rows() <= input.cols() && input.cols() > 1)
@@ -164,7 +178,8 @@ constexpr auto solve(Matrix const& input)
 }
 
 template <typename Matrix, typename = MatrixTypeTraits::is_matrix_of_arithmetic_types<Matrix>>
-auto solve_with_path(Matrix const& input) {
+auto solve_with_path(Matrix const& input)
+{
   Details::StorePaths paths;
   auto max_val = Details::solve(input, paths);
   return std::make_pair(max_val, paths.recover_top());

@@ -47,7 +47,6 @@ TEST_CASE("Right paths found for problems", "[Numeric solver]")
     constexpr auto problem3x3 = Problem<3u, 3u>{{1, 2, 3, 5, 6, 4, 3, 2, 4}};
     expected_result = std::make_pair(13, std::vector<std::size_t>{2, 1, 2});
     REQUIRE(MaxSum::solve_with_path(problem3x3) == expected_result);
-
   }
   SECTION("MULTIPLE PATHS")
   {
@@ -58,4 +57,3 @@ TEST_CASE("Right paths found for problems", "[Numeric solver]")
     REQUIRE((actual == possible_result_1 || actual == possible_result_2));
   }
 }
-
