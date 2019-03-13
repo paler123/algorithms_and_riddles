@@ -25,10 +25,10 @@ struct TopTwo
 
 struct DiscardPaths
 {
-  constexpr void init(std::size_t, std::size_t, std::size_t)
+  constexpr void init(std::size_t, std::size_t, std::size_t) const
   {
   }
-  constexpr void adjust_ends(std::size_t, std::size_t)
+  constexpr void adjust_ends(std::size_t, std::size_t) const
   {
     // intentionally discard the values
   }
@@ -177,6 +177,12 @@ constexpr auto solve(Matrix const& input)
   return Details::solve(input, Details::DiscardPaths{});
 }
 
+/*
+ * Same as solve, but additionally finds a path through the input matrix realising max.
+ * Returns a pair of the max value and path.
+ * Path is expressed as vector of column indices of length intput.rows(),
+ * that is path.at(i) contains information about which element from ith row is taken.
+ */
 template <typename Matrix, typename = MatrixTypeTraits::is_matrix_of_arithmetic_types<Matrix>>
 auto solve_with_path(Matrix const& input)
 {
