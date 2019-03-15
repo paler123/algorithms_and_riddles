@@ -34,14 +34,14 @@ struct index_op_invoker
 };
 
 template <typename T, template <typename M> class invoker>
-using invoked_type = std::remove_reference_t<std::remove_cv_t<std::result_of_t<invoker<T>(T&)>>>;
+using return_type = std::remove_reference_t<std::remove_cv_t<std::result_of_t<invoker<T>(T&)>>>;
 
 template <typename Res, typename T, template <typename M> class invoker>
-constexpr bool right_type_on_invoke = std::is_same_v<Res, invoked_type<T, invoker>>;
+constexpr bool right_type_on_invoke = std::is_same_v<Res, return_type<T, invoker>>;
 
 template <typename T>
 constexpr bool has_index_operator =
-    std::is_arithmetic_v<std::remove_reference_t<std::remove_cv_t<std::result_of_t<index_op_invoker<T>(T&)>>>>;
+    std::is_arithmetic_v<return_type<T, index_op_invoker>>;
 
 template <typename T>
 constexpr bool has_rows = right_type_on_invoke<std::size_t, T, rows_invoker>;
