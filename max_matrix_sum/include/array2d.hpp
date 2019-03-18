@@ -34,6 +34,6 @@ struct Array2d
 private:
   constexpr std::size_t index(std::size_t row, std::size_t col) const
   {
-    return rows_ * row + col;
+    return cols_ * row + col;
   }
 };

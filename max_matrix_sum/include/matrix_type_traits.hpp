@@ -51,6 +51,9 @@ constexpr bool has_cols = right_type_on_invoke<std::size_t, T, cols_invoker>;
 
 } // namespace Details
 
+/*
+ * SFINAE constraint constituting a matrix-like class.
+ */
 template <typename T>
 using is_matrix_of_arithmetic_types =
     std::enable_if_t<Details::has_index_operator<T> && Details::has_rows<T> && Details::has_cols<T>>;

@@ -27,6 +27,7 @@ struct DiscardPaths
 {
   constexpr void init(std::size_t, std::size_t, std::size_t) const
   {
+    // intentionally discard the values
   }
   constexpr void adjust_ends(std::size_t, std::size_t) const
   {
@@ -79,6 +80,7 @@ private:
   bool path_covers_current_top_path(std::size_t path_end) const
   {
     return *top_path.crbegin() != path_end;
+    // intentionally discard the values
   }
 };
 
@@ -151,11 +153,11 @@ constexpr auto solve(Matrix const& input, PathsPolicy&& paths)
 {
   auto result = input(0, 0);
   // special case for ill-shaped matrices
-  if (input.rows() > input.cols())
+  if (input.rows() > 1 && input.cols() == 1)
   {
     result = 0;
   }
-  else if (input.rows() <= input.cols() && input.cols() > 1)
+  else if (input.cols() > 1)
   {
     result = Details::solve_non_trivial(input, paths);
   }
@@ -168,7 +170,7 @@ constexpr auto solve(Matrix const& input, PathsPolicy&& paths)
 
 /*
  * Finds max sum of elements of input Matrix, with following constraints:
- * Exactly one element from each row can be selected
+ * Exactly one element from each row has to be included in the sum
  * If element at (i, j) has been selected, then (i + 1, j) can't be selected
  */
 template <typename Matrix, typename = MatrixTypeTraits::is_matrix_of_arithmetic_types<Matrix>>

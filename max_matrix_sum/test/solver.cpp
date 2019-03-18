@@ -15,7 +15,7 @@ TEST_CASE("Right max sum is found for problems", "[Numeric solver]")
   }
   SECTION("ILL FORMED")
   {
-    constexpr auto ill_formed = Problem<5u, 3u>{};
+    constexpr auto ill_formed = Problem<22u, 1u>{};
     STATIC_REQUIRE(MaxSum::solve(ill_formed) == 0);
   }
   SECTION("NON TRIVIAL")
@@ -40,5 +40,14 @@ TEST_CASE("Right max sum is found for problems", "[Numeric solver]")
 
     constexpr auto problem4x4 = Problem<4u, 4u>{{1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 4, 2, 6, 3, 5, 7}};
     STATIC_REQUIRE(MaxSum::solve(problem4x4) == 27);
+  }
+
+  SECTION("LESS COLUMNS THAN ROWS")
+  {
+    constexpr auto problem3x2 = Problem<3u, 2u>{{1, 10, 2, 5, 6, 7}};
+    STATIC_REQUIRE(MaxSum::solve(problem3x2) == 19);
+
+    constexpr auto problem4x3 = Problem<4u, 3u>{{1, 1, 4, 2, 3, 6, 4, 7, 8, 8, 3, 1}};
+    STATIC_REQUIRE(MaxSum::solve(problem4x3) == 23);
   }
 }

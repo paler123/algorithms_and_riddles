@@ -16,7 +16,7 @@ TEST_CASE("Right paths found for problems", "[Numeric solver]")
   }
   SECTION("ILL FORMED")
   {
-    constexpr auto ill_formed = Problem<5u, 3u>{};
+    constexpr auto ill_formed = Problem<5u, 1u>{};
     auto expected_result = std::make_pair(0, std::vector<std::size_t>{});
     REQUIRE(MaxSum::solve_with_path(ill_formed) == expected_result);
   }
@@ -55,5 +55,15 @@ TEST_CASE("Right paths found for problems", "[Numeric solver]")
     auto possible_result_2 = std::make_pair(27, std::vector<std::size_t>{3, 2, 0, 3});
     auto actual = MaxSum::solve_with_path(problem4x4);
     REQUIRE((actual == possible_result_1 || actual == possible_result_2));
+  }
+  SECTION("LESS COLUMNS THAN ROWS")
+  {
+    constexpr auto problem3x2 = Problem<3u, 2u>{{1, 10, 2, 5, 6, 7}};
+    auto expected_result = std::make_pair(19, std::vector<std::size_t>{1, 0, 1});
+    REQUIRE(MaxSum::solve_with_path(problem3x2) == expected_result);
+
+    constexpr auto problem4x3 = Problem<4u, 3u>{{1, 1, 4, 2, 3, 6, 4, 7, 8, 8, 3, 1}};
+    expected_result = std::make_pair(23, std::vector<std::size_t>{2, 1, 2, 0});
+    REQUIRE(MaxSum::solve_with_path(problem4x3) == expected_result);
   }
 }
