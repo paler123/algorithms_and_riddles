@@ -27,25 +27,25 @@ TEST_CASE("Right paths found for problems", "[Numeric solver]")
     REQUIRE(MaxSum::solve_with_path(problem2x2_0) == expected_result);
 
     constexpr auto problem2x2_1 = Problem<2u, 2u>{{10, 0, 9, 0}};
-    expected_result = std::make_pair(10, std::vector<std::size_t>{0, 1});
+    expected_result = {10, std::vector<std::size_t>{0, 1}};
     auto actual = MaxSum::solve_with_path(problem2x2_1);
     REQUIRE(MaxSum::solve_with_path(problem2x2_1) == expected_result);
 
     constexpr auto problem2x2_2 = Problem<2u, 2u>{{10, 2, 9, 0}};
-    expected_result = std::make_pair(11, std::vector<std::size_t>{1, 0});
+    expected_result = {11, std::vector<std::size_t>{1, 0}};
     actual = MaxSum::solve_with_path(problem2x2_2);
     REQUIRE(MaxSum::solve_with_path(problem2x2_2) == expected_result);
 
     constexpr auto problem1x5 = Problem<1u, 5u>{{10, 2, 9, 7, 6}};
-    expected_result = std::make_pair(10, std::vector<std::size_t>{0});
+    expected_result = {10, std::vector<std::size_t>{0}};
     REQUIRE(MaxSum::solve_with_path(problem1x5) == expected_result);
 
     constexpr auto problem1x7 = Problem<1u, 7u>{{10, 2, 9, 7, 6, 12, 11}};
-    expected_result = std::make_pair(12, std::vector<std::size_t>{5});
+    expected_result = {12, std::vector<std::size_t>{5}};
     REQUIRE(MaxSum::solve_with_path(problem1x7) == expected_result);
 
     constexpr auto problem3x3 = Problem<3u, 3u>{{1, 2, 3, 5, 6, 4, 3, 2, 4}};
-    expected_result = std::make_pair(13, std::vector<std::size_t>{2, 1, 2});
+    expected_result = {13, std::vector<std::size_t>{2, 1, 2}};
     REQUIRE(MaxSum::solve_with_path(problem3x3) == expected_result);
   }
   SECTION("MULTIPLE PATHS")
@@ -63,7 +63,7 @@ TEST_CASE("Right paths found for problems", "[Numeric solver]")
     REQUIRE(MaxSum::solve_with_path(problem3x2) == expected_result);
 
     constexpr auto problem4x3 = Problem<4u, 3u>{{1, 1, 4, 2, 3, 6, 4, 7, 8, 8, 3, 1}};
-    expected_result = std::make_pair(23, std::vector<std::size_t>{2, 1, 2, 0});
+    expected_result = {23, std::vector<std::size_t>{2, 1, 2, 0}};
     REQUIRE(MaxSum::solve_with_path(problem4x3) == expected_result);
   }
 }
