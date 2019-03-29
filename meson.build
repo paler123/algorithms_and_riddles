@@ -35,4 +35,5 @@ catch2_dep = dependency('catch2', fallback : ['catch2', 'catch2_dep'])
 
 subdir('max_matrix_sum')
 subdir('regexes')
+subdir('islands')
 
